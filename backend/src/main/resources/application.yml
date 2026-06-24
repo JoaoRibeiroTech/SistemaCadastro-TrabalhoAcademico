@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/sistemacadastro
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: guest
+    password: guest
+
+app:
+  jwt:
+    secret: minha-chave-secreta-muito-grande-para-jwt-123456789
+    expiration: 86400000
+  rabbit:
+    queue: eventos.sistema

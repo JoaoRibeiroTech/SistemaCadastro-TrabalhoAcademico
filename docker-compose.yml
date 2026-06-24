@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: sistema-postgres
+    environment:
+      POSTGRES_DB: sistemacadastro
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: sistema-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  backend:
+    build: ./backend
+    container_name: sistema-backend
+    depends_on:
+      - postgres
+      - rabbitmq
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend
+    container_name: sistema-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+
+  monitor-frontend:
+    build: ./monitor-frontend
+    container_name: sistema-monitor
+    depends_on:
+      - backend
+    ports:
+      - "3001:3001"
+
+volumes:
+  postgres_data:
